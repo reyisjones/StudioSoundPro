@@ -10,6 +10,8 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using StudioSoundPro.Models;
+using StudioSoundPro.Views;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -23,14 +25,17 @@ namespace StudioSoundPro
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        private readonly DrumMachine _drumMachine;
+
         public MainWindow()
         {
             this.InitializeComponent();
+
+            var frame = new Frame();
+            frame.Navigate(typeof(DrumMachineView));
+            this.Content = frame;
+
         }
 
-        private void myButton_Click(object sender, RoutedEventArgs e)
-        {
-            myButton.Content = "Clicked";
-        }
     }
 }
