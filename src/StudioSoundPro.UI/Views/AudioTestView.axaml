@@ -1,0 +1,133 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:StudioSoundPro.UI.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="StudioSoundPro.UI.Views.AudioTestView"
+             x:DataType="vm:AudioTestViewModel">
+
+  <Design.DataContext>
+    <!-- Design-time data context for previews -->
+    <vm:AudioTestViewModel />
+  </Design.DataContext>
+
+  <StackPanel Margin="20" Spacing="15">
+    <TextBlock Text="StudioSoundPro - Audio Device Test" 
+               FontSize="24" 
+               FontWeight="Bold" 
+               HorizontalAlignment="Center" />
+
+    <!-- Device Selection -->
+    <Border Background="LightGray" CornerRadius="5" Padding="15">
+      <StackPanel Spacing="10">
+        <TextBlock Text="Audio Output Device:" FontWeight="SemiBold" FontSize="16" />
+        <ComboBox ItemsSource="{Binding AvailableDevices}"
+                  SelectedItem="{Binding SelectedDevice}"
+                  MinWidth="400"
+                  IsEnabled="{Binding !IsPlaying}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Name}" />
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBlock Text="{Binding SelectedDevice.MaxOutputChannels, StringFormat='Output Channels: {0}'}"
+                   IsVisible="{Binding SelectedDevice, Converter={x:Static ObjectConverters.IsNotNull}}" />
+        <TextBlock Text="{Binding SelectedDevice.DefaultSampleRate, StringFormat='Sample Rate: {0:F0} Hz'}"
+                   IsVisible="{Binding SelectedDevice, Converter={x:Static ObjectConverters.IsNotNull}}" />
+      </StackPanel>
+    </Border>
+
+    <!-- Sine Generator Controls -->
+    <Border Background="LightBlue" CornerRadius="5" Padding="15">
+      <StackPanel Spacing="10">
+        <TextBlock Text="Sine Wave Generator:" FontWeight="SemiBold" FontSize="16" />
+        
+        <Grid ColumnDefinitions="150,*,100" RowDefinitions="Auto,Auto" Margin="0,5">
+          <TextBlock Grid.Row="0" Grid.Column="0" Text="Frequency (Hz):" VerticalAlignment="Center" />
+          <Slider Grid.Row="0" Grid.Column="1" 
+                  Minimum="20" Maximum="20000" 
+                  Value="{Binding Frequency}"
+                  TickFrequency="100"
+                  IsEnabled="{Binding !IsPlaying}"
+                  Margin="10,0" />
+          <TextBlock Grid.Row="0" Grid.Column="2" 
+                     Text="{Binding Frequency, StringFormat=\{0:F0\}}" 
+                     VerticalAlignment="Center" 
+                     HorizontalAlignment="Center" />
+
+          <TextBlock Grid.Row="1" Grid.Column="0" Text="Amplitude (dB):" VerticalAlignment="Center" />
+          <Slider Grid.Row="1" Grid.Column="1" 
+                  Minimum="-60" Maximum="0" 
+                  Value="{Binding AmplitudeDb}"
+                  TickFrequency="3"
+                  IsEnabled="{Binding !IsPlaying}"
+                  Margin="10,0" />
+          <TextBlock Grid.Row="1" Grid.Column="2" 
+                     Text="{Binding AmplitudeDb, StringFormat=\{0:F1\}}" 
+                     VerticalAlignment="Center" 
+                     HorizontalAlignment="Center" />
+        </Grid>
+      </StackPanel>
+    </Border>
+
+    <!-- Output Meter -->
+    <Border Background="LightGreen" CornerRadius="5" Padding="15">
+      <StackPanel Spacing="10">
+        <TextBlock Text="Output Level Meter:" FontWeight="SemiBold" FontSize="16" />
+        <ProgressBar Value="{Binding OutputLevel}" 
+                     Maximum="1.0" 
+                     Height="30"
+                     Background="DarkGray"
+                     Foreground="Green" />
+        <TextBlock Text="{Binding OutputLevel, StringFormat='Level: {0:F3}'}" 
+                   HorizontalAlignment="Center" />
+      </StackPanel>
+    </Border>
+
+    <!-- Controls -->
+    <Grid ColumnDefinitions="*,*" Margin="0,10">
+      <Button Grid.Column="0" 
+              Content="Start Audio Test" 
+              Command="{Binding StartAudioCommand}"
+              IsEnabled="{Binding !IsPlaying}"
+              Background="Green"
+              Foreground="White"
+              Padding="20,10"
+              Margin="0,0,5,0" />
+      
+      <Button Grid.Column="1" 
+              Content="Stop Audio Test" 
+              Command="{Binding StopAudioCommand}"
+              IsEnabled="{Binding IsPlaying}"
+              Background="Red"
+              Foreground="White"
+              Padding="20,10"
+              Margin="5,0,0,0" />
+    </Grid>
+
+    <!-- Status -->
+    <Border Background="LightYellow" CornerRadius="5" Padding="15">
+      <StackPanel Spacing="5">
+        <TextBlock Text="Status:" FontWeight="SemiBold" />
+        <TextBlock Text="{Binding StatusMessage}" 
+                   TextWrapping="Wrap" />
+      </StackPanel>
+    </Border>
+
+    <!-- Instructions -->
+    <Border Background="LightCyan" CornerRadius="5" Padding="15">
+      <StackPanel Spacing="5">
+        <TextBlock Text="Instructions:" FontWeight="SemiBold" />
+        <TextBlock TextWrapping="Wrap">
+          1. Select an output device from the list above
+          2. Adjust frequency (20-20000 Hz) and amplitude (-60 to 0 dB)
+          3. Click "Start Audio Test" to hear a sine wave tone
+          4. Monitor the output level meter to verify audio is playing
+          5. Click "Stop Audio Test" to stop playback
+        </TextBlock>
+      </StackPanel>
+    </Border>
+  </StackPanel>
+</UserControl>

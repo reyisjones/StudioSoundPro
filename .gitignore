@@ -398,3 +398,64 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# StudioSoundPro specific
+*.backup/
+StudioSoundPro.backup/
+perf/BenchmarkDotNet.Artifacts/
+
+# Audio files (for now, until we have proper assets management)
+*.wav
+*.mp3
+*.aiff
+*.flac
+
+# SystemGuidance framework - development artifacts
+docs/QA-CHECKLIST.md
+tools/
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Rider IDE
+.idea/
+
+# Test coverage reports
+TestResults/
+coverage/
+lcov.info
+
+# Performance benchmarks
+BenchmarkDotNet.Artifacts/
+
+# Package restore lock files
+packages.lock.json
+
+# StyleCop cache
+StyleCopCache/
