@@ -435,6 +435,7 @@ perf/BenchmarkDotNet.Artifacts/
 *.flac
 
 # SystemGuidance framework - development artifacts
+SystemGuidance.md
 docs/QA-CHECKLIST.md
 tools/
 .vscode/
