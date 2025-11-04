@@ -8,7 +8,7 @@
         x:Class="StudioSoundPro.UI.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="StudioSoundPro - Feature #1: Audio Device Abstraction">
+        Title="StudioSoundPro - Feature #2: Transport &amp; Clock">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -16,8 +16,16 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <ScrollViewer>
-        <views:AudioTestView />
-    </ScrollViewer>
+    <DockPanel>
+        <!-- Transport Controls at Top -->
+        <views:TransportView DockPanel.Dock="Top" 
+                           DataContext="{Binding Transport}" 
+                           Margin="8"/>
+        
+        <!-- Audio Testing Below -->
+        <ScrollViewer>
+            <views:AudioTestView DataContext="{Binding AudioTest}"/>
+        </ScrollViewer>
+    </DockPanel>
 
 </Window>

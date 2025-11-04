@@ -1,0 +1,189 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:StudioSoundPro.UI.ViewModels"
+             xmlns:converters="using:StudioSoundPro.UI.Converters"
+             x:Class="StudioSoundPro.UI.Views.TransportView"
+             x:DataType="vm:TransportViewModel">
+
+  <Design.DataContext>
+    <!-- This won't work at design time without dependency injection, but provides IntelliSense -->
+  </Design.DataContext>
+
+  <Border Background="#2D2D2D" 
+          BorderBrush="#4A4A4A" 
+          BorderThickness="1" 
+          CornerRadius="4" 
+          Padding="12">
+    
+    <Grid RowDefinitions="Auto,10,Auto,10,Auto">
+      
+      <!-- Position Display Row -->
+      <Grid Grid.Row="0" ColumnDefinitions="*,10,*,10,*">
+        
+        <!-- Time Position -->
+        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+          <TextBlock Text="Time Position" 
+                     FontSize="11" 
+                     Foreground="#AAAAAA" 
+                     HorizontalAlignment="Center"/>
+          <TextBlock Text="{Binding PositionText}" 
+                     FontSize="20" 
+                     FontFamily="Consolas,monospace" 
+                     Foreground="#FFFFFF" 
+                     HorizontalAlignment="Center"/>
+        </StackPanel>
+        
+        <!-- Musical Position -->
+        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+          <TextBlock Text="Musical Position" 
+                     FontSize="11" 
+                     Foreground="#AAAAAA" 
+                     HorizontalAlignment="Center"/>
+          <TextBlock Text="{Binding MusicalPositionText}" 
+                     FontSize="20" 
+                     FontFamily="Consolas,monospace" 
+                     Foreground="#FFFFFF" 
+                     HorizontalAlignment="Center"/>
+        </StackPanel>
+        
+        <!-- Loop Status -->
+        <StackPanel Grid.Column="4" HorizontalAlignment="Center">
+          <TextBlock Text="Loop Range" 
+                     FontSize="11" 
+                     Foreground="#AAAAAA" 
+                     HorizontalAlignment="Center"/>
+          <TextBlock Text="{Binding LoopRangeText}" 
+                     FontSize="12" 
+                     FontFamily="Consolas,monospace" 
+                     Foreground="#FFCC00" 
+                     HorizontalAlignment="Center"/>
+        </StackPanel>
+        
+      </Grid>
+      
+      <!-- Transport Controls Row -->
+      <Grid Grid.Row="2" ColumnDefinitions="*,5,*,5,*,5,*,20,*">
+        
+        <!-- Rewind Button -->
+        <Button Grid.Column="0" 
+                Command="{Binding RewindCommand}"
+                Width="50" Height="40"
+                Background="#404040" 
+                Foreground="White"
+                BorderBrush="#606060">
+          <TextBlock Text="⏮" FontSize="16"/>
+        </Button>
+        
+        <!-- Play Button -->
+        <Button Grid.Column="2" 
+                Command="{Binding PlayCommand}"
+                Width="50" Height="40"
+                Background="{Binding IsPlaying, Converter={x:Static converters:BooleanToColorConverter.Instance}, 
+                           ConverterParameter='#00AA00|#404040'}"
+                Foreground="White"
+                BorderBrush="#606060">
+          <TextBlock Text="▶" FontSize="16"/>
+        </Button>
+        
+        <!-- Pause Button -->
+        <Button Grid.Column="4" 
+                Command="{Binding PauseCommand}"
+                Width="50" Height="40"
+                Background="{Binding IsPaused, Converter={x:Static converters:BooleanToColorConverter.Instance}, 
+                           ConverterParameter='#FFAA00|#404040'}"
+                Foreground="White"
+                BorderBrush="#606060">
+          <TextBlock Text="⏸" FontSize="16"/>
+        </Button>
+        
+        <!-- Stop Button -->
+        <Button Grid.Column="6" 
+                Command="{Binding StopCommand}"
+                Width="50" Height="40"
+                Background="#404040" 
+                Foreground="White"
+                BorderBrush="#606060">
+          <TextBlock Text="⏹" FontSize="16"/>
+        </Button>
+        
+        <!-- Record Button -->
+        <Button Grid.Column="8" 
+                Command="{Binding RecordCommand}"
+                Width="50" Height="40"
+                Background="{Binding IsRecording, Converter={x:Static converters:BooleanToColorConverter.Instance}, 
+                           ConverterParameter='#CC0000|#404040'}"
+                Foreground="White"
+                BorderBrush="#606060">
+          <TextBlock Text="⏺" FontSize="16"/>
+        </Button>
+        
+      </Grid>
+      
+      <!-- Tempo and Time Signature Row -->
+      <Grid Grid.Row="4" ColumnDefinitions="Auto,10,Auto,10,Auto,20,Auto,10,Auto">
+        
+        <!-- Tempo Control -->
+        <StackPanel Grid.Column="0" Orientation="Horizontal">
+          <TextBlock Text="BPM:" 
+                     VerticalAlignment="Center" 
+                     Foreground="#AAAAAA" 
+                     Margin="0,0,5,0"/>
+          <NumericUpDown Value="{Binding Tempo}" 
+                         Minimum="60" 
+                         Maximum="200" 
+                         Increment="1"
+                         FormatString="F1"
+                         Width="80"
+                         Background="#404040"
+                         Foreground="White"/>
+        </StackPanel>
+        
+        <!-- Time Signature Numerator -->
+        <StackPanel Grid.Column="2" Orientation="Horizontal">
+          <TextBlock Text="Beats:" 
+                     VerticalAlignment="Center" 
+                     Foreground="#AAAAAA" 
+                     Margin="0,0,5,0"/>
+          <NumericUpDown Value="{Binding TimeSignatureNumerator}" 
+                         Minimum="1" 
+                         Maximum="16" 
+                         Increment="1"
+                         Width="60"
+                         Background="#404040"
+                         Foreground="White"/>
+        </StackPanel>
+        
+        <!-- Time Signature Denominator -->
+        <StackPanel Grid.Column="4" Orientation="Horizontal">
+          <TextBlock Text="Note:" 
+                     VerticalAlignment="Center" 
+                     Foreground="#AAAAAA" 
+                     Margin="0,0,5,0"/>
+          <ComboBox SelectedItem="{Binding TimeSignatureDenominator}"
+                    Width="60"
+                    Background="#404040"
+                    Foreground="White">
+            <ComboBoxItem Content="1"/>
+            <ComboBoxItem Content="2"/>
+            <ComboBoxItem Content="4"/>
+            <ComboBoxItem Content="8"/>
+            <ComboBoxItem Content="16"/>
+            <ComboBoxItem Content="32"/>
+          </ComboBox>
+        </StackPanel>
+        
+        <!-- Loop Toggle -->
+        <StackPanel Grid.Column="6" Orientation="Horizontal">
+          <CheckBox IsChecked="{Binding IsLooping}" 
+                    Content="Loop"
+                    Foreground="#AAAAAA"
+                    VerticalAlignment="Center"/>
+        </StackPanel>
+        
+      </Grid>
+      
+    </Grid>
+    
+  </Border>
+  
+</UserControl>
