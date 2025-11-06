@@ -29,6 +29,18 @@
                 
                 <Separator Width="1" Height="20" Background="#444"/>
                 
+                <Button Command="{Binding ImportAudioFileCommand}"
+                       Content="Import Audio"
+                       Padding="12,6"
+                       ToolTip.Tip="Import a WAV audio file"/>
+                
+                <Button Command="{Binding ExportTrackCommand}"
+                       Content="Export Track"
+                       Padding="12,6"
+                       ToolTip.Tip="Export track as WAV file"/>
+                
+                <Separator Width="1" Height="20" Background="#444"/>
+                
                 <TextBlock Text="{Binding Tracks.Count, StringFormat=Tracks: {0}}"
                           VerticalAlignment="Center"
                           Foreground="#AAA"
