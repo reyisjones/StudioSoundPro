@@ -33,6 +33,7 @@ public class BooleanToColorConverter : IValueConverter
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        // ConvertBack is not needed for one-way bindings
+        return Avalonia.Data.BindingOperations.DoNothing;
     }
 }

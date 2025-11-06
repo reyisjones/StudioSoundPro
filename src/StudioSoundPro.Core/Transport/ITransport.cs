@@ -3,7 +3,7 @@ namespace StudioSoundPro.Core.Transport;
 /// <summary>
 /// Controls transport functionality for the DAW (play, pause, stop, record)
 /// </summary>
-public interface ITransport
+public interface ITransport : IDisposable
 {
     /// <summary>Gets the current transport state</summary>
     TransportState State { get; }

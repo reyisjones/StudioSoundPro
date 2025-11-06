@@ -4,11 +4,11 @@
         xmlns:views="using:StudioSoundPro.UI.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+        mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="800"
         x:Class="StudioSoundPro.UI.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="StudioSoundPro - Feature #2: Transport &amp; Clock">
+        Title="StudioSoundPro">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -22,10 +22,26 @@
                            DataContext="{Binding Transport}" 
                            Margin="8"/>
         
-        <!-- Audio Testing Below -->
-        <ScrollViewer>
-            <views:AudioTestView DataContext="{Binding AudioTest}"/>
-        </ScrollViewer>
+        <!-- Mixer Controls at Right -->
+        <views:MixerView DockPanel.Dock="Right"
+                        DataContext="{Binding Mixer}"
+                        Width="300"
+                        Margin="0,0,8,8"/>
+        
+        <!-- Main Content Area -->
+        <TabControl>
+            <!-- Timeline Tab -->
+            <TabItem Header="Timeline">
+                <views:TimelineView DataContext="{Binding Session}"/>
+            </TabItem>
+            
+            <!-- Audio Test Tab -->
+            <TabItem Header="Audio Test">
+                <ScrollViewer>
+                    <views:AudioTestView DataContext="{Binding AudioTest}"/>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
     </DockPanel>
 
 </Window>

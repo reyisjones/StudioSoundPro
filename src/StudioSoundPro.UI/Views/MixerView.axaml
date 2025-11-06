@@ -1,0 +1,74 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:StudioSoundPro.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="150"
+             x:Class="StudioSoundPro.UI.Views.MixerView"
+             x:DataType="vm:MixerViewModel">
+    
+    <Design.DataContext>
+        <vm:MixerViewModel/>
+    </Design.DataContext>
+
+    <Border Background="#252526" Padding="12" CornerRadius="4">
+        <StackPanel Spacing="12">
+            
+            <!-- Title -->
+            <TextBlock Text="Master" 
+                      FontSize="14" 
+                      FontWeight="SemiBold"
+                      Foreground="White"/>
+            
+            <!-- Master Volume -->
+            <StackPanel Spacing="4">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Left" 
+                              Text="Volume" 
+                              VerticalAlignment="Center"
+                              Foreground="#AAA"/>
+                    <Button DockPanel.Dock="Right"
+                           Command="{Binding ResetMasterVolumeCommand}"
+                           Content="Reset"
+                           Padding="6,2"
+                           FontSize="10"
+                           ToolTip.Tip="Reset to 0 dB"/>
+                    <TextBlock DockPanel.Dock="Right"
+                              Text="{Binding MasterVolumeDb}"
+                              Margin="0,0,8,0"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Right"
+                              Foreground="White"
+                              FontWeight="SemiBold"/>
+                </DockPanel>
+                
+                <Slider Value="{Binding MasterVolume}"
+                       Minimum="0"
+                       Maximum="2"
+                       TickFrequency="0.1"
+                       IsSnapToTickEnabled="False"
+                       ToolTip.Tip="Master output volume"/>
+            </StackPanel>
+            
+            <!-- Master Mute -->
+            <ToggleButton IsChecked="{Binding IsMasterMuted}"
+                         Content="MUTE"
+                         HorizontalAlignment="Stretch"
+                         FontWeight="Bold"
+                         ToolTip.Tip="Mute master output">
+                <ToggleButton.Styles>
+                    <Style Selector="ToggleButton">
+                        <Setter Property="Background" Value="#555"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Style>
+                    <Style Selector="ToggleButton:checked">
+                        <Setter Property="Background" Value="#F44336"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Style>
+                </ToggleButton.Styles>
+            </ToggleButton>
+            
+        </StackPanel>
+    </Border>
+    
+</UserControl>
