@@ -137,7 +137,8 @@ public class AudioFileServiceTests : IDisposable
         // Assert
         clip.Should().NotBeNull();
         clip.Name.Should().Be("async");
-        clip.IsLoaded.Should().BeTrue();
+        clip.Channels.Should().Be(2);
+        clip.Length.Should().Be(2);
     }
 
     [Fact]
@@ -145,11 +146,11 @@ public class AudioFileServiceTests : IDisposable
     {
         // Arrange
         var track = new Track("Test Track");
-        var clip = new AudioClip("Test Clip");
         
         // Create simple test audio
         var audioData = new float[] { 0.1f, -0.1f, 0.2f, -0.2f };
-        clip.LoadAudio(audioData, 48000);
+        var clip = new AudioClip("Test Clip", audioData, 2, 48000);
+        clip.StartPosition = 0;
         
         track.AddClip(clip);
         
@@ -193,8 +194,9 @@ public class AudioFileServiceTests : IDisposable
     {
         // Arrange
         var track = new Track("Test Track");
-        var clip = new AudioClip("Test Clip");
-        clip.LoadAudio(new float[] { 0.1f, -0.1f }, 48000);
+        var audioData = new float[] { 0.1f, -0.1f };
+        var clip = new AudioClip("Test Clip", audioData, 2, 48000);
+        clip.StartPosition = 0;
         track.AddClip(clip);
         
         var outputPath = GetTempFilePath("custom.wav");
@@ -220,8 +222,9 @@ public class AudioFileServiceTests : IDisposable
     {
         // Arrange
         var track = new Track("Async Track");
-        var clip = new AudioClip("Async Clip");
-        clip.LoadAudio(new float[] { 0.1f, -0.1f }, 48000);
+        var audioData = new float[] { 0.1f, -0.1f };
+        var clip = new AudioClip("Async Clip", audioData, 2, 48000);
+        clip.StartPosition = 0;
         track.AddClip(clip);
         
         var outputPath = GetTempFilePath("async_export.wav");
@@ -267,13 +270,14 @@ public class AudioFileServiceTests : IDisposable
         // Arrange
         var track = new Track("Multi Clip");
         
-        var clip1 = new AudioClip("Clip 1");
-        clip1.LoadAudio(new float[] { 0.5f, 0.5f }, 48000);
-        clip1.StartSample = 0;
+        // Create audio data for 2 frames (4 samples interleaved: L,R,L,R)
+        var audioData1 = new float[] { 0.5f, 0.5f, 0.5f, 0.5f };
+        var clip1 = new AudioClip("Clip 1", audioData1, 2, 48000);
+        clip1.StartPosition = 0;
         
-        var clip2 = new AudioClip("Clip 2");
-        clip2.LoadAudio(new float[] { 0.3f, 0.3f }, 48000);
-        clip2.StartSample = 1; // Starts one sample later
+        var audioData2 = new float[] { 0.3f, 0.3f };
+        var clip2 = new AudioClip("Clip 2", audioData2, 2, 48000);
+        clip2.StartPosition = 1; // Starts one frame later
         
         track.AddClip(clip1);
         track.AddClip(clip2);
@@ -288,10 +292,12 @@ public class AudioFileServiceTests : IDisposable
         reader.Open(outputPath);
         var samples = reader.ReadAllSamples();
         
-        // First sample: only clip1
+        // First frame (samples 0,1): only clip1
         samples[0].Should().BeApproximately(0.5f, 0.01f);
+        samples[1].Should().BeApproximately(0.5f, 0.01f);
         
-        // Second sample: both clips mixed
+        // Second frame (samples 2,3): both clips mixed
         samples[2].Should().BeApproximately(0.8f, 0.01f); // 0.5 + 0.3
+        samples[3].Should().BeApproximately(0.8f, 0.01f); // 0.5 + 0.3
     }
 }

@@ -217,8 +217,8 @@ public class AudioFileService : IDisposable
         {
             var clipBuffer = new float[clip.Length * 2];
             
-            // Read samples from the clip
-            clip.ReadSamples(clipBuffer, 0, (int)clip.Length * 2, clip.SourceOffset);
+            // Read samples from the clip starting from its timeline position
+            clip.ReadSamples(clipBuffer, 0, (int)clip.Length * 2, clip.StartPosition);
 
             // Apply fade in/out and gain
             ApplyClipProcessing(clip, clipBuffer);
