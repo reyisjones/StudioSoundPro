@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:StudioSoundPro.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="60"
+             x:Class="StudioSoundPro.UI.Views.ClipView"
+             x:DataType="vm:ClipViewModel">
+    
+    <Design.DataContext>
+        <vm:ClipViewModel/>
+    </Design.DataContext>
+
+    <!-- Clip Rectangle -->
+    <Border Background="{Binding Color}"
+            BorderBrush="#FFF"
+            BorderThickness="1"
+            CornerRadius="3"
+            Padding="4"
+            Opacity="{Binding IsMuted, Converter={StaticResource BooleanToOpacityConverter}}">
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Clip Name -->
+            <TextBlock Grid.Row="0"
+                      Text="{Binding Name}"
+                      FontSize="11"
+                      FontWeight="SemiBold"
+                      Foreground="#FFF"
+                      TextTrimming="CharacterEllipsis"
+                      MaxLines="1"/>
+            
+            <!-- Waveform Placeholder -->
+            <Border Grid.Row="1" 
+                   Background="#000"
+                   Opacity="0.2"
+                   CornerRadius="2"
+                   Margin="0,2"/>
+            
+            <!-- Clip Info -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="{Binding GainDb, StringFormat={}{0:F1} dB}"
+                          FontSize="9"
+                          Foreground="#DDD"/>
+                
+                <TextBlock Text="{Binding Length, StringFormat=Length: {0}}"
+                          FontSize="9"
+                          Foreground="#AAA"
+                          IsVisible="{Binding $parent[Border].Bounds.Width, Converter={StaticResource GreaterThanConverter}, ConverterParameter=150}"/>
+            </StackPanel>
+        </Grid>
+        
+    </Border>
+    
+</UserControl>

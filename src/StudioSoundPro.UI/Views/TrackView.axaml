@@ -1,0 +1,135 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:StudioSoundPro.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="80"
+             x:Class="StudioSoundPro.UI.Views.TrackView"
+             x:DataType="vm:TrackViewModel">
+    
+    <Design.DataContext>
+        <vm:TrackViewModel/>
+    </Design.DataContext>
+
+    <Border BorderBrush="#444" BorderThickness="0,0,0,1" Background="#2B2B2B">
+        <Grid ColumnDefinitions="200,*" Height="80">
+            
+            <!-- Track Header (Left Side) -->
+            <Border Grid.Column="0" Background="#333" Padding="8">
+                <Grid RowDefinitions="Auto,*,Auto">
+                    
+                    <!-- Track Name -->
+                    <TextBox Grid.Row="0" 
+                             Text="{Binding Name}" 
+                             FontWeight="SemiBold"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             Foreground="White"
+                             Margin="0,0,0,4"/>
+                    
+                    <!-- Track Controls -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+                        
+                        <!-- Mute Button -->
+                        <ToggleButton IsChecked="{Binding IsMuted}"
+                                     Width="32" Height="24"
+                                     Content="M"
+                                     ToolTip.Tip="Mute"
+                                     Classes.active="{Binding IsMuted}">
+                            <ToggleButton.Styles>
+                                <Style Selector="ToggleButton">
+                                    <Setter Property="Background" Value="#555"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Style>
+                                <Style Selector="ToggleButton.active">
+                                    <Setter Property="Background" Value="#FF5722"/>
+                                </Style>
+                            </ToggleButton.Styles>
+                        </ToggleButton>
+                        
+                        <!-- Solo Button -->
+                        <ToggleButton IsChecked="{Binding IsSolo}"
+                                     Width="32" Height="24"
+                                     Content="S"
+                                     ToolTip.Tip="Solo"
+                                     Classes.active="{Binding IsSolo}">
+                            <ToggleButton.Styles>
+                                <Style Selector="ToggleButton">
+                                    <Setter Property="Background" Value="#555"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Style>
+                                <Style Selector="ToggleButton.active">
+                                    <Setter Property="Background" Value="#FFC107"/>
+                                </Style>
+                            </ToggleButton.Styles>
+                        </ToggleButton>
+                        
+                        <!-- Arm Button -->
+                        <ToggleButton IsChecked="{Binding IsArmed}"
+                                     Width="32" Height="24"
+                                     Content="R"
+                                     ToolTip.Tip="Arm for Recording"
+                                     Classes.active="{Binding IsArmed}">
+                            <ToggleButton.Styles>
+                                <Style Selector="ToggleButton">
+                                    <Setter Property="Background" Value="#555"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Style>
+                                <Style Selector="ToggleButton.active">
+                                    <Setter Property="Background" Value="#F44336"/>
+                                </Style>
+                            </ToggleButton.Styles>
+                        </ToggleButton>
+                        
+                    </StackPanel>
+                    
+                    <!-- Volume and Pan Controls -->
+                    <Grid Grid.Row="2" ColumnDefinitions="*,8,*" Margin="0,4,0,0">
+                        
+                        <!-- Volume -->
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="{Binding VolumeDb, StringFormat={}{0:F1} dB}" 
+                                      FontSize="10" 
+                                      Foreground="#AAA"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,0,0,2"/>
+                            <Slider Value="{Binding Volume}"
+                                   Minimum="0"
+                                   Maximum="2"
+                                   TickFrequency="0.1"
+                                   ToolTip.Tip="Volume"/>
+                        </StackPanel>
+                        
+                        <!-- Pan -->
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="{Binding PanLabel}" 
+                                      FontSize="10" 
+                                      Foreground="#AAA"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,0,0,2"/>
+                            <Slider Value="{Binding Pan}"
+                                   Minimum="-1"
+                                   Maximum="1"
+                                   TickFrequency="0.1"
+                                   ToolTip.Tip="Pan"/>
+                        </StackPanel>
+                        
+                    </Grid>
+                    
+                </Grid>
+            </Border>
+            
+            <!-- Timeline/Clip Area (Right Side) -->
+            <Border Grid.Column="1" Background="#1E1E1E" BorderBrush="#444" BorderThickness="1,0,0,0">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <Canvas x:Name="ClipCanvas" Height="80" Width="8000" Background="Transparent">
+                        <!-- Note: Clip positioning will be handled in code-behind based on sample position and zoom level -->
+                        <!-- For now, clips are not rendered. Timeline rendering will be implemented in future iteration. -->
+                    </Canvas>
+                </ScrollViewer>
+            </Border>
+            
+        </Grid>
+    </Border>
+    
+</UserControl>
